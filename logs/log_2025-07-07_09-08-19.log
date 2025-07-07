@@ -1,0 +1,27 @@
+2025-07-07 09:08:19,489 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 09:08:19,675 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-07 09:08:40,201 - INFO  -Webhook created successfully.
+2025-07-07 09:08:58,434 - ERROR  -Error processing webhook: cannot access local variable 'success' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 225, in handle_webhook
+    if success:
+       ^^^^^^^
+UnboundLocalError: cannot access local variable 'success' where it is not associated with a value
+2025-07-07 09:08:58,437 - ERROR  -Error processing webhook: cannot access local variable 'success' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 225, in handle_webhook
+    if success:
+       ^^^^^^^
+UnboundLocalError: cannot access local variable 'success' where it is not associated with a value
+2025-07-07 09:08:58,519 - ERROR  -Error processing webhook: cannot access local variable 'success' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 225, in handle_webhook
+    if success:
+       ^^^^^^^
+UnboundLocalError: cannot access local variable 'success' where it is not associated with a value
+2025-07-07 09:08:58,565 - ERROR  -Error processing webhook: cannot access local variable 'success' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 225, in handle_webhook
+    if success:
+       ^^^^^^^
+UnboundLocalError: cannot access local variable 'success' where it is not associated with a value

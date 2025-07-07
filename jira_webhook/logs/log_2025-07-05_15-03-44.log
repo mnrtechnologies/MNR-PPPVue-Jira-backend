@@ -1,0 +1,2 @@
+2025-07-05 15:03:44,567 - INFO  -AWS SQS client initialized successfully.
+2025-07-05 15:03:44,567 - CRITICAL  -Failed to load or validate credentials: 'key'. Exiting.

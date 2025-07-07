@@ -1,0 +1,5 @@
+2025-07-06 11:44:37,762 - INFO  -connection to mongodb has been closed
+2025-07-06 11:44:38,629 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 11:44:38,629 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 11:44:38,629 - INFO  -Finished fetching all 5 projects.
+2025-07-06 11:44:38,630 - INFO  -Successfully retrieved all project details.

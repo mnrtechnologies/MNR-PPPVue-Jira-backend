@@ -1,0 +1,6 @@
+2025-07-07 11:54:33,028 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 11:54:47,986 - INFO  -Webhook created successfully.
+2025-07-07 11:56:30,749 - INFO  -Successfully sent ALPHA-1 to SQS.
+2025-07-07 11:56:30,944 - INFO  -Successfully sent ALPHA-1 to SQS.
+2025-07-07 11:56:31,134 - INFO  -Successfully sent ALPHA-1 to SQS.
+2025-07-07 11:56:31,323 - INFO  -Successfully sent ALPHA-1 to SQS.

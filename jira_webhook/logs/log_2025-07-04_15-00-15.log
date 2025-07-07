@@ -1,0 +1,19 @@
+2025-07-04 15:00:15,849 - INFO  -AWS SQS client initialized successfully.
+2025-07-04 15:00:22,738 - ERROR  -Error processing webhook: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 203, in handle_webhook
+    fields=issue_key.get("fields","NA")
+           ^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-07-04 15:00:22,753 - ERROR  -Error processing webhook: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 203, in handle_webhook
+    fields=issue_key.get("fields","NA")
+           ^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-07-04 15:00:22,755 - ERROR  -Error processing webhook: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 203, in handle_webhook
+    fields=issue_key.get("fields","NA")
+           ^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'

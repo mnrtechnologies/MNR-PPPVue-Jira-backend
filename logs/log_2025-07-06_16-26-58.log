@@ -1,0 +1,18 @@
+2025-07-06 16:26:58,521 - INFO  -connection to mongodb has been closed
+2025-07-06 16:26:58,521 - CRITICAL  -An error occurred during the main execution: object of type 'NoneType' has no len()
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 545, in <module>
+    logger.info(f"--- Script Finished: Successfully processed {len(processed_data)} issues in total. ---")
+                                                               ^^^^^^^^^^^^^^^^^^^
+TypeError: object of type 'NoneType' has no len()
+2025-07-06 16:26:58,966 - ERROR  -exception calling callback for <Future at 0x2168bf8bbd0 state=finished returned dict>
+Traceback (most recent call last):
+  File "C:\Users\tousi\AppData\Local\Programs\Python\Python311\Lib\concurrent\futures\_base.py", line 340, in _invoke_callbacks
+    callback(self)
+  File "C:\Users\tousi\AppData\Local\Programs\Python\Python311\Lib\asyncio\futures.py", line 401, in _call_set_state
+    dest_loop.call_soon_threadsafe(_set_state, destination, source)
+  File "C:\Users\tousi\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 803, in call_soon_threadsafe
+    self._check_closed()
+  File "C:\Users\tousi\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 519, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed

@@ -1,0 +1,10 @@
+2025-07-06 09:11:53,006 - INFO  -Starting to fetch all JIRA project details...
+2025-07-06 09:11:53,007 - CRITICAL  -An unhandled error occurred during project detail fetching: fetch_projects() missing 3 required positional arguments: 'base_url', 'auth', and 'headers'
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_projects.py", line 168, in fetch_all_project_details
+    projects_data = await fetch_projects(page_start_at, page_max_results)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\.venv\Lib\site-packages\backoff\_async.py", line 151, in retry
+    ret = await target(*args, **kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: fetch_projects() missing 3 required positional arguments: 'base_url', 'auth', and 'headers'

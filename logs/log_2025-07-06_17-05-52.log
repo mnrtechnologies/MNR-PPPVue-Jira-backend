@@ -1,0 +1,2 @@
+2025-07-06 17:08:16,505 - ERROR  -Network connection error to JIRA: Cannot connect to host shunta-bolden-s-workspaceatlassian.net:443 ssl:default [getaddrinfo failed]
+2025-07-06 17:10:02,568 - ERROR  -Network connection error to JIRA: Cannot connect to host shunta-bolden-s-workspaceatlassian.net:443 ssl:default [getaddrinfo failed]

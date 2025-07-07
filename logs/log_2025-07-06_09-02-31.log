@@ -1,0 +1,5 @@
+2025-07-06 09:02:31,196 - INFO  -Starting to fetch all JIRA project details...
+2025-07-06 09:02:32,301 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 09:02:32,301 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 09:02:32,301 - INFO  -Finished fetching all 5 projects.
+2025-07-06 09:02:32,301 - INFO  -Successfully retrieved all project details.

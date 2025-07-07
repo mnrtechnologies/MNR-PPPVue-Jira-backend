@@ -1,0 +1,10 @@
+2025-07-06 09:13:03,265 - INFO  -Starting to fetch all JIRA project details...
+2025-07-06 09:13:03,265 - CRITICAL  -An unhandled error occurred during project detail fetching: fetch_projects() got an unexpected keyword argument 'page_max_resultsbase_url'
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_projects.py", line 168, in fetch_all_project_details
+    projects_data = await fetch_projects(page_start_at, page_max_resultsbase_url=base_url,auth=auth,headers=headers)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\.venv\Lib\site-packages\backoff\_async.py", line 151, in retry
+    ret = await target(*args, **kwargs)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: fetch_projects() got an unexpected keyword argument 'page_max_resultsbase_url'

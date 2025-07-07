@@ -1,0 +1,2 @@
+2025-07-07 09:53:02,116 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 09:53:02,282 - CRITICAL  -Skipping execution because credentials failed to load.

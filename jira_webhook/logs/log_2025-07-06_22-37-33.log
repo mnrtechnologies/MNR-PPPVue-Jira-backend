@@ -1,0 +1,11 @@
+2025-07-06 22:37:33,855 - INFO  -AWS SQS client initialized successfully.
+2025-07-06 22:37:33,855 - CRITICAL  -Failed to load or validate credentials: 'key'. Exiting.
+2025-07-06 22:37:38,699 - ERROR  -Error processing webhook: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 141, in handle_webhook
+    status_transition=await status_transition_log(changelog)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 90, in status_transition_log
+    if item['field']=="status":
+       ~~~~^^^^^^^^^
+TypeError: list indices must be integers or slices, not str

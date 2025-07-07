@@ -1,0 +1,2 @@
+2025-07-04 09:58:17,203 - INFO  -AWS SQS client initialized successfully.
+2025-07-04 09:59:02,289 - INFO  -Successfully sent ALPHA-1 to SQS.

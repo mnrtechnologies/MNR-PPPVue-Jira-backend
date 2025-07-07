@@ -1,0 +1,6 @@
+2025-07-05 22:53:59,496 - INFO  -Starting to fetch all JIRA project details for user: camaraderie_experts@outlook.com
+2025-07-05 22:53:59,496 - INFO  -Fetching credentials for camaraderie_experts@outlook.com from MongoDB.
+2025-07-05 22:54:05,075 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-05 22:54:05,075 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-05 22:54:05,075 - INFO  -Finished fetching all 5 projects.
+2025-07-05 22:54:05,076 - INFO  -Successfully retrieved all project details for camaraderie_experts@outlook.com.

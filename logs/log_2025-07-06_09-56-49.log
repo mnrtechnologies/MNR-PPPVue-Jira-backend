@@ -1,0 +1,66 @@
+2025-07-06 09:56:49,635 - ERROR  -Error fetching team field ID: multidict update sequence element #0 has length 1; 2 is required
+2025-07-06 09:56:49,635 - ERROR  -Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000017C7ED204D0>
+2025-07-06 09:56:49,635 - WARNING  -Team field ID not found. Team information will not be available.
+2025-07-06 09:56:51,145 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 09:56:51,146 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 09:56:51,146 - INFO  -Finished fetching all 5 projects.
+2025-07-06 09:56:51,146 - INFO  -Successfully retrieved all project details.
+2025-07-06 09:56:51,146 - INFO  -Found 5 projects to process.
+2025-07-06 09:56:51,147 - INFO  -Processing project: 'ALPHA' (Project Alpha)
+2025-07-06 09:56:51,147 - ERROR  -An unhandled error occurred while processing issues for project ALPHA. Halting project.
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 407, in process_all_issues
+    issues_data = await fetch_issues_for_project(auth,base_url,project_key, startAt, maxResults, team_field_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 197, in fetch_issues_for_project
+    session = await get_session()
+                    ^^^^^^^^^^^^^
+TypeError: get_session() missing 2 required positional arguments: 'auth' and 'headers'
+2025-07-06 09:56:51,147 - INFO  -Processed 0 issues for project ALPHA
+2025-07-06 09:56:51,147 - INFO  -Processing project: 'BETA' (Project Beta)
+2025-07-06 09:56:51,147 - ERROR  -An unhandled error occurred while processing issues for project BETA. Halting project.
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 407, in process_all_issues
+    issues_data = await fetch_issues_for_project(auth,base_url,project_key, startAt, maxResults, team_field_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 197, in fetch_issues_for_project
+    session = await get_session()
+                    ^^^^^^^^^^^^^
+TypeError: get_session() missing 2 required positional arguments: 'auth' and 'headers'
+2025-07-06 09:56:51,147 - INFO  -Processed 0 issues for project BETA
+2025-07-06 09:56:51,147 - INFO  -Processing project: 'ETA' (Project ETA)
+2025-07-06 09:56:51,147 - ERROR  -An unhandled error occurred while processing issues for project ETA. Halting project.
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 407, in process_all_issues
+    issues_data = await fetch_issues_for_project(auth,base_url,project_key, startAt, maxResults, team_field_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 197, in fetch_issues_for_project
+    session = await get_session()
+                    ^^^^^^^^^^^^^
+TypeError: get_session() missing 2 required positional arguments: 'auth' and 'headers'
+2025-07-06 09:56:51,149 - INFO  -Processed 0 issues for project ETA
+2025-07-06 09:56:51,149 - INFO  -Processing project: 'KAN' (My Kanban Project)
+2025-07-06 09:56:51,149 - ERROR  -An unhandled error occurred while processing issues for project KAN. Halting project.
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 407, in process_all_issues
+    issues_data = await fetch_issues_for_project(auth,base_url,project_key, startAt, maxResults, team_field_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 197, in fetch_issues_for_project
+    session = await get_session()
+                    ^^^^^^^^^^^^^
+TypeError: get_session() missing 2 required positional arguments: 'auth' and 'headers'
+2025-07-06 09:56:51,149 - INFO  -Processed 0 issues for project KAN
+2025-07-06 09:56:51,149 - INFO  -Processing project: 'PVMVP' (AI-Powered Portfolio Dashboard)
+2025-07-06 09:56:51,149 - ERROR  -An unhandled error occurred while processing issues for project PVMVP. Halting project.
+Traceback (most recent call last):
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 407, in process_all_issues
+    issues_data = await fetch_issues_for_project(auth,base_url,project_key, startAt, maxResults, team_field_id)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "e:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 197, in fetch_issues_for_project
+    session = await get_session()
+                    ^^^^^^^^^^^^^
+TypeError: get_session() missing 2 required positional arguments: 'auth' and 'headers'
+2025-07-06 09:56:51,150 - INFO  -Processed 0 issues for project PVMVP
+2025-07-06 09:56:51,150 - INFO  -Finished processing all projects. Total issues processed: 0
+2025-07-06 09:56:51,151 - INFO  ---- Script Finished: Successfully processed 0 issues in total. ---

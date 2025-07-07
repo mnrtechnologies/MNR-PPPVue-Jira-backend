@@ -1,0 +1,5 @@
+2025-07-06 18:13:13,919 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-06 18:13:33,334 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 18:13:33,334 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 18:13:33,335 - INFO  -Finished fetching all 5 projects.
+2025-07-06 18:13:33,335 - INFO  -Successfully retrieved all project details.

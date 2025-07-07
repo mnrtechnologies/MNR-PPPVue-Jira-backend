@@ -1,0 +1,26 @@
+2025-07-06 21:36:15,484 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-06 21:36:44,467 - ERROR  -Error fetching team field ID: multidict update sequence element #0 has length 1; 2 is required
+2025-07-06 21:36:44,467 - ERROR  -Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000273C57DCD10>
+2025-07-06 21:36:44,467 - WARNING  -Team field ID not found. Team information will not be available.
+2025-07-06 21:36:44,967 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 21:36:44,968 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 21:36:44,968 - INFO  -Finished fetching all 5 projects.
+2025-07-06 21:36:44,968 - INFO  -Successfully retrieved all project details.
+2025-07-06 21:36:44,968 - INFO  -Found 5 projects to process.
+2025-07-06 21:36:44,968 - INFO  -Processing project: 'ALPHA' (Project Alpha)
+2025-07-06 21:36:45,680 - INFO  -Finished fetching all 18 issues for project ALPHA.
+2025-07-06 21:36:45,680 - INFO  -Processed 18 issues for project ALPHA
+2025-07-06 21:36:45,680 - INFO  -Processing project: 'BETA' (Project Beta)
+2025-07-06 21:36:46,195 - INFO  -No issues found in project BETA.
+2025-07-06 21:36:46,195 - INFO  -Processed 0 issues for project BETA
+2025-07-06 21:36:46,195 - INFO  -Processing project: 'ETA' (Project ETA)
+2025-07-06 21:36:46,898 - INFO  -Finished fetching all 3 issues for project ETA.
+2025-07-06 21:36:46,898 - INFO  -Processed 3 issues for project ETA
+2025-07-06 21:36:46,898 - INFO  -Processing project: 'KAN' (My Kanban Project)
+2025-07-06 21:36:47,766 - INFO  -Finished fetching all 7 issues for project KAN.
+2025-07-06 21:36:47,766 - INFO  -Processed 7 issues for project KAN
+2025-07-06 21:36:47,766 - INFO  -Processing project: 'PVMVP' (AI-Powered Portfolio Dashboard)
+2025-07-06 21:36:48,485 - INFO  -Finished fetching all 14 issues for project PVMVP.
+2025-07-06 21:36:48,485 - INFO  -Processed 14 issues for project PVMVP
+2025-07-06 21:36:48,485 - INFO  -Finished processing all projects. Total issues processed: 42

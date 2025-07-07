@@ -1,0 +1,2 @@
+2025-07-06 22:13:14,558 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-06 22:13:37,789 - ERROR  -Failed to create webhook: 400 - {"messages":[{"arguments":["Invalid Webhook URL: https://e681-171-61-144-20.ngrok-free.app /jira-webhook."],"key":"url"},{"arguments":["Invalid Webhook URL: https://e681-171-61-144-20.ngrok-free.app /jira-webhook."],"key":"url"}]}

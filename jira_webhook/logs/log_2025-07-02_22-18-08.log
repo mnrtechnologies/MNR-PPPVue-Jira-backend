@@ -1,0 +1,7 @@
+2025-07-02 22:18:08,625 - INFO  -AWS SQS client initialized successfully.
+2025-07-02 22:18:43,599 - ERROR  -Error processing webhook: 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 130, in handle_webhook
+    team_name=team_names.get("name",'NA')
+              ^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'

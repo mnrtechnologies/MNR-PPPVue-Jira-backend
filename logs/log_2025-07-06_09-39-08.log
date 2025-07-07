@@ -1,0 +1,16 @@
+2025-07-06 09:39:08,783 - INFO  -Starting JIRA project fetching process...
+2025-07-06 09:39:08,783 - INFO  -Connecting to MongoDB with URI: mongodb+srv://info:xlhQRSPwz0RwzmXD@cluster0.rmyui...
+2025-07-06 09:39:08,930 - INFO  -Looking for user with ID: 68696f783ad17ea0c39cbc65
+2025-07-06 09:39:09,288 - INFO  -Found user document with fields: ['_id', 'jira_email', 'jira_domain', 'jira_api_key']
+2025-07-06 09:39:09,288 - INFO  -Initialized JIRA client with:
+2025-07-06 09:39:09,289 - INFO  -  - Email: camaraderie_experts@outlook.com
+2025-07-06 09:39:09,289 - INFO  -  - Domain: shunta-bolden-s-workspace.atlassian.net
+2025-07-06 09:39:09,289 - INFO  -  - API Key: ************************************************************************************************************************************************************************************************
+2025-07-06 09:39:09,320 - INFO  -Starting to fetch all JIRA project details...
+2025-07-06 09:39:09,320 - INFO  -Fetching projects from URL: https://shunta-bolden-s-workspace.atlassian.net/rest/api/3/project/search
+2025-07-06 09:39:09,320 - INFO  -Request parameters: {'startAt': 0, 'maxResults': 50}
+2025-07-06 09:39:10,254 - INFO  -Response status: 200
+2025-07-06 09:39:10,255 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 09:39:10,255 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 09:39:10,255 - INFO  -Finished fetching all 5 projects.
+2025-07-06 09:39:10,255 - INFO  -Successfully retrieved all project details.

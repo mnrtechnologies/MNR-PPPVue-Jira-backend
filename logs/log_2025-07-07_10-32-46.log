@@ -1,0 +1,27 @@
+2025-07-07 10:32:46,954 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 10:33:10,870 - ERROR  -Error fetching team field ID: multidict update sequence element #0 has length 1; 2 is required
+2025-07-07 10:33:10,872 - ERROR  -Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000019A57B86250>
+2025-07-07 10:33:10,872 - WARNING  -Team field ID not found. Team information will not be available.
+2025-07-07 10:33:11,400 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-07 10:33:11,400 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-07 10:33:11,400 - INFO  -Finished fetching all 5 projects.
+2025-07-07 10:33:11,400 - INFO  -Successfully retrieved all project details.
+2025-07-07 10:33:11,402 - INFO  -Found 5 projects to process.
+2025-07-07 10:33:11,402 - INFO  -Processing project: 'ALPHA' (Project Alpha)
+2025-07-07 10:33:16,759 - INFO  -Finished fetching all 19 issues for project ALPHA.
+2025-07-07 10:33:16,759 - INFO  -Processed 19 issues for project ALPHA
+2025-07-07 10:33:16,760 - INFO  -Processing project: 'BETA' (Project Beta)
+2025-07-07 10:33:17,262 - INFO  -No issues found in project BETA.
+2025-07-07 10:33:17,262 - INFO  -Processed 0 issues for project BETA
+2025-07-07 10:33:17,262 - INFO  -Processing project: 'ETA' (Project ETA)
+2025-07-07 10:33:18,704 - INFO  -Finished fetching all 3 issues for project ETA.
+2025-07-07 10:33:18,704 - INFO  -Processed 3 issues for project ETA
+2025-07-07 10:33:18,704 - INFO  -Processing project: 'KAN' (My Kanban Project)
+2025-07-07 10:33:21,358 - INFO  -Finished fetching all 7 issues for project KAN.
+2025-07-07 10:33:21,358 - INFO  -Processed 7 issues for project KAN
+2025-07-07 10:33:21,358 - INFO  -Processing project: 'PVMVP' (AI-Powered Portfolio Dashboard)
+2025-07-07 10:33:25,670 - INFO  -Finished fetching all 17 issues for project PVMVP.
+2025-07-07 10:33:25,670 - INFO  -Processed 17 issues for project PVMVP
+2025-07-07 10:33:25,670 - INFO  -Finished processing all projects.
+2025-07-07 10:33:26,352 - INFO  -Webhook created successfully.

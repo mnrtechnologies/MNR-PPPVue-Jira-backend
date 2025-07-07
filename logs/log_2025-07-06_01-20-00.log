@@ -1,0 +1,11 @@
+2025-07-06 01:20:08,698 - ERROR  -Network connection error to JIRA: Cannot connect to host string:443 ssl:default [getaddrinfo failed]
+2025-07-06 01:20:08,702 - INFO  -Backing off fetch_projects(...) for 1.8s (aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host string:443 ssl:default [getaddrinfo failed])
+2025-07-06 01:20:13,184 - ERROR  -Network connection error to JIRA: Cannot connect to host string:443 ssl:default [getaddrinfo failed]
+2025-07-06 01:20:13,184 - INFO  -Backing off fetch_projects(...) for 0.2s (aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host string:443 ssl:default [getaddrinfo failed])
+2025-07-06 01:20:15,664 - ERROR  -Network connection error to JIRA: Cannot connect to host string:443 ssl:default [getaddrinfo failed]
+2025-07-06 01:20:15,675 - INFO  -Backing off fetch_projects(...) for 3.4s (aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host string:443 ssl:default [getaddrinfo failed])
+2025-07-06 01:20:21,813 - ERROR  -Network connection error to JIRA: Cannot connect to host string:443 ssl:default [getaddrinfo failed]
+2025-07-06 01:20:21,813 - INFO  -Backing off fetch_projects(...) for 3.8s (aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host string:443 ssl:default [getaddrinfo failed])
+2025-07-06 01:20:32,887 - ERROR  -Network connection error to JIRA: Cannot connect to host string:443 ssl:default [getaddrinfo failed]
+2025-07-06 01:20:32,888 - ERROR  -Giving up fetch_projects(...) after 5 tries (aiohttp.client_exceptions.ClientConnectorDNSError: Cannot connect to host string:443 ssl:default [getaddrinfo failed])
+2025-07-06 01:20:32,888 - CRITICAL  -Failed to connect to JIRA. Please check network connectivity and JIRA server status.

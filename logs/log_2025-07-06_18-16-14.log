@@ -1,0 +1,15 @@
+2025-07-06 18:16:14,543 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-06 18:16:33,599 - ERROR  -Error fetching team field ID: multidict update sequence element #0 has length 1; 2 is required
+2025-07-06 18:16:33,599 - ERROR  -Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x0000017046D1A310>
+2025-07-06 18:16:33,599 - WARNING  -Team field ID not found. Team information will not be available.
+2025-07-06 18:16:33,599 - CRITICAL  -Critical error in process_all_issues: fetch_all_project_details() missing 1 required positional argument: 'db_collection'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 372, in process_all_issues
+    projects_details = await fetch_all_project_details(user_id)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: fetch_all_project_details() missing 1 required positional argument: 'db_collection'
+2025-07-06 18:16:34,091 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 18:16:34,091 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 18:16:34,091 - INFO  -Finished fetching all 5 projects.
+2025-07-06 18:16:34,091 - INFO  -Successfully retrieved all project details.

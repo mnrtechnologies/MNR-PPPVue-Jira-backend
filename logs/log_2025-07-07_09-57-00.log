@@ -1,0 +1,6 @@
+2025-07-07 09:57:00,661 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 09:57:00,823 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-07 09:57:10,067 - INFO  -Successfully sent KAN-6 to SQS.
+2025-07-07 09:59:59,925 - INFO  -Successfully sent PVMVP-17 to SQS.
+2025-07-07 10:06:18,300 - INFO  -Successfully sent ALPHA-8 to SQS.
+2025-07-07 10:08:43,675 - INFO  -Successfully sent ALPHA-8 to SQS.

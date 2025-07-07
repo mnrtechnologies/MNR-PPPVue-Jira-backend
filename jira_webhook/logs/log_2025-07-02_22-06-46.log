@@ -1,0 +1,18 @@
+2025-07-02 22:06:47,039 - INFO  -AWS SQS client initialized successfully.
+2025-07-02 22:07:01,264 - ERROR  -Error processing webhook: Expecting value: line 1 column 1 (char 0)
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 22, in handle_webhook
+    data = await request.json()
+           ^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\.venv\Lib\site-packages\starlette\requests.py", line 249, in json
+    self._json = json.loads(body)
+                 ^^^^^^^^^^^^^^^^
+  File "C:\Users\tousi\AppData\Local\Programs\Python\Python311\Lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\tousi\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\tousi\AppData\Local\Programs\Python\Python311\Lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)

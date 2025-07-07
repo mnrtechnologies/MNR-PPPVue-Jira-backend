@@ -1,0 +1,47 @@
+2025-07-04 16:35:51,973 - INFO  -AWS SQS client initialized successfully.
+2025-07-04 16:35:51,974 - CRITICAL  -Failed to load or validate credentials: 'key'. Exiting.
+2025-07-04 16:36:08,173 - ERROR  -An unexpected error occurred during API call: name 'headers' is not defined
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 55, in get_details
+    async with ClientSession(auth=auth,headers=headers) as session:
+                                               ^^^^^^^
+NameError: name 'headers' is not defined
+2025-07-04 16:36:08,173 - ERROR  -Error processing webhook: name 'headers' is not defined
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 280, in handle_webhook
+    data=await get_details(issue_key)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 55, in get_details
+    async with ClientSession(auth=auth,headers=headers) as session:
+                                               ^^^^^^^
+NameError: name 'headers' is not defined
+2025-07-04 16:36:08,180 - ERROR  -An unexpected error occurred during API call: name 'headers' is not defined
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 55, in get_details
+    async with ClientSession(auth=auth,headers=headers) as session:
+                                               ^^^^^^^
+NameError: name 'headers' is not defined
+2025-07-04 16:36:08,180 - ERROR  -Error processing webhook: name 'headers' is not defined
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 280, in handle_webhook
+    data=await get_details(issue_key)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 55, in get_details
+    async with ClientSession(auth=auth,headers=headers) as session:
+                                               ^^^^^^^
+NameError: name 'headers' is not defined
+2025-07-04 16:36:08,183 - ERROR  -An unexpected error occurred during API call: name 'headers' is not defined
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 55, in get_details
+    async with ClientSession(auth=auth,headers=headers) as session:
+                                               ^^^^^^^
+NameError: name 'headers' is not defined
+2025-07-04 16:36:08,183 - ERROR  -Error processing webhook: name 'headers' is not defined
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 280, in handle_webhook
+    data=await get_details(issue_key)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 55, in get_details
+    async with ClientSession(auth=auth,headers=headers) as session:
+                                               ^^^^^^^
+NameError: name 'headers' is not defined

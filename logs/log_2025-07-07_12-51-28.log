@@ -1,0 +1,8 @@
+2025-07-07 12:51:28,675 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 12:53:38,248 - ERROR  -No user found with given ID.
+2025-07-07 12:54:02,232 - INFO  -Successfully sent ALPHA-6 to SQS.
+2025-07-07 12:54:02,416 - INFO  -Successfully sent ALPHA-6 to SQS.
+2025-07-07 12:54:02,591 - INFO  -Successfully sent ALPHA-6 to SQS.
+2025-07-07 12:54:02,766 - INFO  -Successfully sent ALPHA-6 to SQS.
+2025-07-07 12:54:02,945 - INFO  -Successfully sent ALPHA-6 to SQS.
+2025-07-07 12:54:03,120 - INFO  -Successfully sent ALPHA-6 to SQS.

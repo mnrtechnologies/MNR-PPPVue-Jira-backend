@@ -1,0 +1,16 @@
+2025-07-04 08:58:48,968 - INFO  -AWS SQS client initialized successfully.
+2025-07-04 09:00:38,581 - INFO  -Successfully sent PVMVP-13 to SQS.
+2025-07-04 09:04:01,415 - INFO  -Successfully sent PVMVP-4 to SQS.
+2025-07-04 09:04:02,410 - INFO  -Successfully sent PVMVP-5 to SQS.
+2025-07-04 09:04:03,967 - INFO  -Successfully sent PVMVP-7 to SQS.
+2025-07-04 09:04:06,115 - INFO  -Successfully sent PVMVP-9 to SQS.
+2025-07-04 09:04:08,375 - INFO  -Successfully sent PVMVP-10 to SQS.
+2025-07-04 09:05:54,856 - INFO  -Successfully sent PVMVP-3 to SQS.
+2025-07-04 09:12:49,385 - INFO  -Successfully sent PVMVP-4 to SQS.
+2025-07-04 09:14:43,082 - INFO  -Successfully sent PVMVP-14 to SQS.
+2025-07-04 09:18:44,760 - INFO  -Successfully sent PVMVP-3 to SQS.
+2025-07-04 09:23:52,469 - INFO  -Successfully sent PVMVP-2 to SQS.
+2025-07-04 09:27:28,772 - INFO  -Successfully sent PVMVP-3 to SQS.
+2025-07-04 09:34:53,503 - INFO  -Successfully sent PVMVP-2 to SQS.
+2025-07-04 09:41:38,617 - INFO  -Successfully sent PVMVP-3 to SQS.
+2025-07-04 09:54:22,182 - INFO  -Successfully sent PVMVP-3 to SQS.

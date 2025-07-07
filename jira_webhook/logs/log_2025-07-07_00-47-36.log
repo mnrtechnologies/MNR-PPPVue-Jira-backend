@@ -1,0 +1,8 @@
+2025-07-07 00:47:36,941 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 00:47:36,941 - CRITICAL  -Failed to load or validate credentials: 'key'. Exiting.
+2025-07-07 00:47:44,363 - ERROR  -Error processing webhook: cannot access local variable 'success' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 225, in handle_webhook
+    if success:
+       ^^^^^^^
+UnboundLocalError: cannot access local variable 'success' where it is not associated with a value

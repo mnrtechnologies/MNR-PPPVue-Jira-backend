@@ -1,0 +1,3 @@
+2025-07-07 09:02:32,144 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 09:02:32,327 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-07 09:03:01,123 - INFO  -Webhook created successfully.

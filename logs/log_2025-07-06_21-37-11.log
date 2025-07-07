@@ -1,0 +1,58 @@
+2025-07-06 21:37:11,681 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-06 21:37:20,945 - ERROR  -Error fetching team field ID: multidict update sequence element #0 has length 1; 2 is required
+2025-07-06 21:37:20,945 - ERROR  -Unclosed client session
+client_session: <aiohttp.client.ClientSession object at 0x00000233E43FF890>
+2025-07-06 21:37:20,945 - WARNING  -Team field ID not found. Team information will not be available.
+2025-07-06 21:37:21,519 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-06 21:37:21,519 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-06 21:37:21,519 - INFO  -Finished fetching all 5 projects.
+2025-07-06 21:37:21,519 - INFO  -Successfully retrieved all project details.
+2025-07-06 21:37:21,522 - INFO  -Found 5 projects to process.
+2025-07-06 21:37:21,522 - INFO  -Processing project: 'ALPHA' (Project Alpha)
+2025-07-06 21:37:22,592 - ERROR  -An unhandled error occurred while processing issues for project ALPHA. Halting project.
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 508, in process_all_issues
+    status_transition=await status_transition_log(changelog)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 96, in status_transition_log
+    changelog = processed_data.get("changelog", {})
+                ^^^^^^^^^^^^^^
+NameError: name 'processed_data' is not defined
+2025-07-06 21:37:22,593 - INFO  -Processed 0 issues for project ALPHA
+2025-07-06 21:37:22,593 - INFO  -Processing project: 'BETA' (Project Beta)
+2025-07-06 21:37:23,181 - INFO  -No issues found in project BETA.
+2025-07-06 21:37:23,181 - INFO  -Processed 0 issues for project BETA
+2025-07-06 21:37:23,181 - INFO  -Processing project: 'ETA' (Project ETA)
+2025-07-06 21:37:23,734 - ERROR  -An unhandled error occurred while processing issues for project ETA. Halting project.
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 508, in process_all_issues
+    status_transition=await status_transition_log(changelog)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 96, in status_transition_log
+    changelog = processed_data.get("changelog", {})
+                ^^^^^^^^^^^^^^
+NameError: name 'processed_data' is not defined
+2025-07-06 21:37:23,734 - INFO  -Processed 0 issues for project ETA
+2025-07-06 21:37:23,734 - INFO  -Processing project: 'KAN' (My Kanban Project)
+2025-07-06 21:37:24,596 - ERROR  -An unhandled error occurred while processing issues for project KAN. Halting project.
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 508, in process_all_issues
+    status_transition=await status_transition_log(changelog)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 96, in status_transition_log
+    changelog = processed_data.get("changelog", {})
+                ^^^^^^^^^^^^^^
+NameError: name 'processed_data' is not defined
+2025-07-06 21:37:24,596 - INFO  -Processed 0 issues for project KAN
+2025-07-06 21:37:24,596 - INFO  -Processing project: 'PVMVP' (AI-Powered Portfolio Dashboard)
+2025-07-06 21:37:25,420 - ERROR  -An unhandled error occurred while processing issues for project PVMVP. Halting project.
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 508, in process_all_issues
+    status_transition=await status_transition_log(changelog)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\PM -AI-TOOL\pm-ai-tool\src\ingestion\fetch_issues.py", line 96, in status_transition_log
+    changelog = processed_data.get("changelog", {})
+                ^^^^^^^^^^^^^^
+NameError: name 'processed_data' is not defined
+2025-07-06 21:37:25,422 - INFO  -Processed 0 issues for project PVMVP
+2025-07-06 21:37:25,422 - INFO  -Finished processing all projects. Total issues processed: 0

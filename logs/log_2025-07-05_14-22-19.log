@@ -1,0 +1,24 @@
+2025-07-05 14:22:19,808 - INFO  -AWS SQS client initialized successfully.
+2025-07-05 14:22:20,583 - INFO  -Team Field Found: customfield_10001 \u2192 Team
+2025-07-05 14:22:20,584 - INFO  -Starting to fetch all JIRA project details...
+2025-07-05 14:22:21,430 - INFO  -Successfully fetched projects starting at 0 with 5 results.
+2025-07-05 14:22:21,430 - INFO  -Fetched 5 of 5 projects so far.
+2025-07-05 14:22:21,431 - INFO  -Finished fetching all 5 projects.
+2025-07-05 14:22:21,431 - INFO  -Successfully retrieved all project details.
+2025-07-05 14:22:21,431 - INFO  -Found 5 projects to process.
+2025-07-05 14:22:21,431 - INFO  -Processing project: 'ALPHA' (Project Alpha)
+2025-07-05 14:22:26,151 - INFO  -Finished fetching all 18 issues for project ALPHA.
+2025-07-05 14:22:26,151 - INFO  -Processed 18 issues for project ALPHA
+2025-07-05 14:22:26,151 - INFO  -Processing project: 'BETA' (Project Beta)
+2025-07-05 14:22:26,806 - INFO  -No issues found in project BETA.
+2025-07-05 14:22:26,806 - INFO  -Processed 0 issues for project BETA
+2025-07-05 14:22:26,806 - INFO  -Processing project: 'ETA' (Project ETA)
+2025-07-05 14:22:27,990 - INFO  -Finished fetching all 3 issues for project ETA.
+2025-07-05 14:22:27,990 - INFO  -Processed 3 issues for project ETA
+2025-07-05 14:22:27,990 - INFO  -Processing project: 'KAN' (My Kanban Project)
+2025-07-05 14:22:29,922 - INFO  -Finished fetching all 7 issues for project KAN.
+2025-07-05 14:22:29,922 - INFO  -Processed 7 issues for project KAN
+2025-07-05 14:22:29,923 - INFO  -Processing project: 'PVMVP' (AI-Powered Portfolio Dashboard)
+2025-07-05 14:22:33,421 - INFO  -Finished fetching all 14 issues for project PVMVP.
+2025-07-05 14:22:33,421 - INFO  -Processed 14 issues for project PVMVP
+2025-07-05 14:22:33,421 - INFO  -Finished processing all projects.

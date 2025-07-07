@@ -1,0 +1,27 @@
+2025-07-07 09:03:32,067 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 09:03:32,218 - CRITICAL  -Skipping execution because credentials failed to load.
+2025-07-07 09:03:46,987 - INFO  -Webhook created successfully.
+2025-07-07 09:03:46,987 - ERROR  -Error processing webhook: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 115, in handle_webhook
+    event = data.get("webhookEvent", "unknown")
+            ^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-07-07 09:04:15,587 - ERROR  -Error processing webhook: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 115, in handle_webhook
+    event = data.get("webhookEvent", "unknown")
+            ^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-07-07 09:04:15,611 - ERROR  -Error processing webhook: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 115, in handle_webhook
+    event = data.get("webhookEvent", "unknown")
+            ^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-07-07 09:04:15,737 - ERROR  -Error processing webhook: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\main2.py", line 115, in handle_webhook
+    event = data.get("webhookEvent", "unknown")
+            ^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'

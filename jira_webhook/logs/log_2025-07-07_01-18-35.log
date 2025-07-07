@@ -1,0 +1,8 @@
+2025-07-07 01:18:36,025 - INFO  -AWS SQS client initialized successfully.
+2025-07-07 01:18:36,025 - CRITICAL  -Failed to load or validate credentials: 'key'. Exiting.
+2025-07-07 01:19:05,542 - ERROR  -Error processing webhook: 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 261, in handle_webhook
+    team_name=team_names.get("name",'NA')
+              ^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'

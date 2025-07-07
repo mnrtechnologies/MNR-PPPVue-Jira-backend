@@ -1,0 +1,2 @@
+2025-07-06 13:01:00,591 - ERROR  -JIRA API error: 404 - {"errorMessage": "Site temporarily unavailable", "errorCode": "OTHER"}
+2025-07-06 13:03:25,457 - ERROR  -Network connection error to JIRA: Cannot connect to host shunta-bolden-s-workspaceatlassian.net:443 ssl:default [getaddrinfo failed]

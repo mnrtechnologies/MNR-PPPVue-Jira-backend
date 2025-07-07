@@ -1,0 +1,4 @@
+requests
+openAI
+pymongo
+pydantic

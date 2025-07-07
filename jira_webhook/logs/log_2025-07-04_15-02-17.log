@@ -1,0 +1,19 @@
+2025-07-04 15:02:17,499 - INFO  -AWS SQS client initialized successfully.
+2025-07-04 15:02:24,889 - ERROR  -Error processing webhook: cannot access local variable 'fields' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 225, in handle_webhook
+    print("fileds",fields)
+                   ^^^^^^
+UnboundLocalError: cannot access local variable 'fields' where it is not associated with a value
+2025-07-04 15:02:25,007 - ERROR  -Error processing webhook: cannot access local variable 'fields' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 225, in handle_webhook
+    print("fileds",fields)
+                   ^^^^^^
+UnboundLocalError: cannot access local variable 'fields' where it is not associated with a value
+2025-07-04 15:02:25,010 - ERROR  -Error processing webhook: cannot access local variable 'fields' where it is not associated with a value
+Traceback (most recent call last):
+  File "E:\PM -AI-TOOL\pm-ai-tool\jira_webhook\vv.py", line 225, in handle_webhook
+    print("fileds",fields)
+                   ^^^^^^
+UnboundLocalError: cannot access local variable 'fields' where it is not associated with a value

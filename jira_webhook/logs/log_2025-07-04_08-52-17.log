@@ -1,0 +1,3 @@
+2025-07-04 08:52:17,666 - INFO  -AWS SQS client initialized successfully.
+2025-07-04 08:53:26,660 - INFO  -Successfully sent KAN-1 to SQS.
+2025-07-04 08:56:34,696 - INFO  -Successfully sent PVMVP-12 to SQS.
