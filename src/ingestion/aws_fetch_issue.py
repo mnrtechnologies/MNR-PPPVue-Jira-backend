@@ -4,6 +4,8 @@ import time
 from bson import ObjectId
 from typing import Dict, Optional, Any
 from datetime import datetime, timezone
+from datetime import date
+today = date.today()
 from utils.sqs import send_issue_to_sqs
 from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
 from src.ingestion.fetch_projects import fetch_all_project_details
@@ -571,6 +573,7 @@ async def process_all_issues(user_id,db_collection,email):
                             "key": issue_key,
                             # "status_transition":status_transition,
                             "project_name":project_name,
+                            "last_ai_interaction_day":today,
                             "worklog_enterie":worklog_entries,
                             "last_status_change_date":last_status_change_date,
                             "team": team_name,
