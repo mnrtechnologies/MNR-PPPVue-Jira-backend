@@ -386,7 +386,7 @@ async def fetch_issues_for_project(headers,base_url,auth,project_key: str, start
     logger.warning(f"Returning empty result for project {project_key} after all retry attempts failed")
     return {"issues": [], "total": 0}
 
-async def get_team_field_id(auth,base_url):
+async def get_team_field_id(auth,base_url,headers):
     """
     Dynamically discover the team field ID by searching through all custom fields.
     """
@@ -396,7 +396,7 @@ async def get_team_field_id(auth,base_url):
     
     try:
         fields_url = f"https://{base_url}/rest/api/3/field"
-        session = await get_session(auth,base_url)
+        session = await get_session(auth,headers)
         
         async with session.get(fields_url) as response:
             if response.status == 200:
@@ -442,7 +442,7 @@ async def process_all_issues(user_id,db_collection,email):
     #     return 0, 0
 
     try:
-        team_field_id = await get_team_field_id(auth,base_url)
+        team_field_id = await get_team_field_id(auth,base_url,headers)
         if not team_field_id:
            logger.warning("Team field ID not found. Team information will not be available.")
            team_field_id = None
