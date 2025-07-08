@@ -11,6 +11,10 @@ from src.ingestion.fetch_projects import fetch_all_project_details
 from motor.motor_asyncio import AsyncIOMotorClient
 import uvicorn
 from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field, EmailStr
+from bson import ObjectId
+from pydantic.json_schema import JsonSchemaValue
+from pydantic_core import core_schema
 from pydantic import BaseModel
 import asyncio
 from jira_webhook.webhook_creator import webhook
@@ -48,6 +52,7 @@ class Settings(BaseSettings):
     MONGO_URI: str
     DATABASE_NAME: str 
     COLLECTION_NAME: str 
+    COLLECTION_NAME_USER:str
 
     class Config:
         env_file = ".env"
@@ -60,7 +65,34 @@ try:
 except (ValueError, TypeError) as e:
     print(f"FATAL ERROR: Invalid settings configuration. Details: {e}")
     exit(1)
+class PyObjectId(ObjectId):
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, _source_type: any, _handler: any
+    ) -> core_schema.CoreSchema:
+        return core_schema.json_or_python_schema(
+            json_schema=core_schema.str_schema(),
+            python_schema=core_schema.union_schema(
+                [
+                    core_schema.is_instance_schema(ObjectId),
+                    core_schema.chain_schema(
+                        [
+                            core_schema.str_schema(),
+                            core_schema.no_info_plain_validator_function(cls.validate),
+                        ]
+                    ),
+                ]
+            ),
+            serialization=core_schema.plain_serializer_function_ser_schema(
+                lambda x: str(x)
+            ),
+        )
 
+    @classmethod
+    def validate(cls, v):
+        if not ObjectId.is_valid(v):
+            raise ValueError("Invalid ObjectId")
+        return ObjectId(v)
 
 # --- 2. Pydantic Models for Data Validation ---
 class JiraCredentials(BaseModel):
@@ -68,6 +100,7 @@ class JiraCredentials(BaseModel):
     jira_domain: str = Field(..., min_length=3, description="The user's JIRA domain (e.g., your-company.atlassian.net)")
     jira_email: EmailStr = Field(..., description="The user's email, which will be used as the unique identifier.")
     jira_api_key: str = Field(..., min_length=10, description="The user's JIRA API Key.")
+    user_id:PyObjectId 
 
 # class SuccessResponse(BaseModel):
 #     """Standard success response model."""
@@ -165,6 +198,7 @@ async def connect_and_sync_jira(background_tasks: BackgroundTasks,credentials: J
         "jira_email":credentials.jira_email,
         "jira_domain": credentials.jira_domain,
         "jira_api_key": credentials.jira_api_key,
+        "userid":credentials.user_id
     }
 
     # Perform an "upsert" operation
@@ -175,10 +209,20 @@ async def connect_and_sync_jira(background_tasks: BackgroundTasks,credentials: J
                    db_collection = request.app.db[settings.COLLECTION_NAME]
                    result=await db[settings.COLLECTION_NAME].insert_one(credential_document)
                    new_user_id=result.inserted_id
+                   update_result = await db[settings.COLLECTION_NAME_USER].update_one(
+                       {"_id":credentials.user_id},
+                      {"$set": {"jira_credential_id": new_user_id}},
+                   )
+                   if update_result.matched_count == 0:
+                       print("Error: Could not find user to update.")
+                   else:
+                      print("Success: User record linked to credentials.")
                    user_id_str = str(new_user_id)
-                   jira_webhook(user_id_str)
+                #    jira_webhook(user_id_str)
                    print(user_id_str)
                    background_tasks.add_task(process_all_issues, user_id_str,db_collection,credentials.jira_email)
+                #    background_tasks.add_task(fetch_all_project_details, user_id_str,db_collection)
+
                    background_tasks.add_task(webhook, user_id_str,db_collection)
                 #    background_tasks.add_task(jira_webhook,request)
 
