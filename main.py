@@ -1,57 +1,30 @@
 import os
-import asyncio
-import http
 from contextlib import asynccontextmanager
-from dotenv import load_dotenv
-
-from fastapi import FastAPI, HTTPException, status, Request, BackgroundTasks
+from fastapi import FastAPI, HTTPException, status, Request,BackgroundTasks,Request
 from pydantic import BaseModel, EmailStr, Field
 from pydantic_settings import BaseSettings
-from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo.errors import PyMongoError
-
-from aiohttp import BasicAuth, ClientSession, ClientConnectionError
-
-# Assuming these are your custom modules
+# from pymongo import MongoClient
 from jira_webhook.main2 import handle_webhook
-from jira_webhook.webhook_creator import webhook
+from pymongo.errors import ConnectionFailure, PyMongoError
 from src.ingestion.aws_fetch_issue import process_all_issues
 from src.ingestion.fetch_projects import fetch_all_project_details
+from motor.motor_asyncio import AsyncIOMotorClient
+import uvicorn
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import asyncio
+from jira_webhook.webhook_creator import webhook
+import http
+from aiohttp import BasicAuth, ClientSession, ClientConnectionError, ClientResponseError
 from src.logger import get_logger
-
-# --- 1. Centralized Configuration Management ---
-
-# Load environment variables from .env file FIRST
-load_dotenv()
 logger = get_logger(__name__)
 
-class Settings(BaseSettings):
-    """
-    Manages application settings using Pydantic, loading from environment variables.
-    It will automatically read from a .env file if `python-dotenv` is installed.
-    """
-    MONGO_URI: str
-    DATABASE_NAME: str
-    COLLECTION_NAME: str
-    COLLECTION_NAME_ISSUES: str
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        extra="ignore"
-
-# Instantiate settings. The app will fail to start if any are missing.
-try:
-    settings = Settings()
-    # This line is crucial for debugging. It will print the loaded settings.
-    print("✅ Application settings loaded successfully:")
-    print(settings.model_dump_json(indent=2))
-except (ValueError, TypeError) as e:
-    print(f"❌ FATAL ERROR: Invalid settings configuration. Check your .env file. Details: {e}")
-    exit(1)
-
-
-# --- 2. Custom Exceptions ---
+# --- 1. Configuration Management ---
+# Load configuration from environment variables (.env file)
+# Create a file named .env in the same directory with these values:
+# MONGO_URI="mongodb://localhost:27017/"
+# JIRA_DB_NAME="jira_project_management"
+# JIRA_COLLECTION_NAME="credentials"
 class AuthenticationError(Exception):
     pass
 
@@ -59,41 +32,66 @@ class PermissionError(Exception):
     pass
 
 class JiraAPIError(Exception):
-    def __init__(self, status_code: int, message: str = "JIRA API error"):
-        super().__init__(f"{message}: {status_code}")
+    def init(self, status_code: int, message: str = "JIRA API error"):
+        super().init(f"{message}: {status_code}")
         self.status_code = status_code
         self.message = message
 
+class JIRAAUTH(BaseModel):
+    JIRA_EMAIL: str
+    JIRA_DOMAIN: str
+    JIRA_API: str
 
-# --- 3. Pydantic Models for Data Validation ---
+
+class Settings(BaseSettings):
+    """Manages application settings using environment variables."""
+    MONGO_URI: str
+    DATABASE_NAME: str 
+    COLLECTION_NAME: str 
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        extra = "ignore"  # This line tells Pydantic to ignore extra variables from the .env file
+
+# Instantiate settings
+try:
+    settings = Settings()
+except (ValueError, TypeError) as e:
+    print(f"FATAL ERROR: Invalid settings configuration. Details: {e}")
+    exit(1)
+
+
+# --- 2. Pydantic Models for Data Validation ---
 class JiraCredentials(BaseModel):
-    """Defines the structure for incoming Jira credentials."""
+    """Defines the structure and validation for incoming Jira credentials."""
     jira_domain: str = Field(..., min_length=3, description="The user's JIRA domain (e.g., your-company.atlassian.net)")
     jira_email: EmailStr = Field(..., description="The user's email, which will be used as the unique identifier.")
     jira_api_key: str = Field(..., min_length=10, description="The user's JIRA API Key.")
 
+# class SuccessResponse(BaseModel):
+#     """Standard success response model."""
+#     message: str
+#     email: EmailStr
 
-# --- 4. Database and Application Lifespan Management ---
+
+# --- 3. Database and Application Lifespan Management ---
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Manages application startup and shutdown events.
     Connects to MongoDB on startup and closes the connection on shutdown.
     """
-    print("\nConnecting to MongoDB...")
+    print("Connecting to MongoDB...")
     try:
-        # Use the MONGO_URI from the validated settings object
         app.mongodb_client = AsyncIOMotorClient(settings.MONGO_URI)
         await app.mongodb_client.admin.command('ping') # Verify connection
-        
-        # Use the DATABASE_NAME from the validated settings object
         app.db = app.mongodb_client[settings.DATABASE_NAME]
-        
-        print(f"✅ Successfully connected to MongoDB.")
-        print(f"   - Using database: '{settings.DATABASE_NAME}'")
-
+        print("Successfully connected to MongoDB.")
     except Exception as e:
-        print(f"❌ FATAL ERROR: Could not connect to MongoDB. Details: {e}")
+        print(f"FATAL ERROR: Could not connect to MongoDB. Details: {e}")
+        # In a real-world scenario, you might have a more graceful fallback or exit.
+        # For this script, we will exit if the DB is not available on startup.
         exit(1)
     
     yield # The application is now running
@@ -102,102 +100,147 @@ async def lifespan(app: FastAPI):
     app.mongodb_client.close()
 
 
-# --- 5. FastAPI Application Initialization ---
+# --- 4. FastAPI Application Initialization ---
 app = FastAPI(
     title="Jira Credential Management API",
     description="An API to store and manage Jira credentials in MongoDB.",
-    version="1.2.0",
+    version="1.1.0",
     lifespan=lifespan
 )
-
-
-# --- 6. API Endpoints ---
 @app.post("/jira-webhook")
-async def jira_webhook(request: Request):
-    """Handles incoming webhooks from Jira."""
-    print("Received jira webhook")
+async def jira_webhook(request:Request):
+    print("jira webhook setup")
     try:
         data = await request.json()
-        event = data.get("webhookEvent", "unknown")
-        output = await handle_webhook(event, data)
-        print(output)
-        return {"status": "webhook processed"}
-    except Exception as e:
-        logger.error(f"Error processing webhook: {e}")
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error processing webhook")
+    except Exception:
+        logger.error("Failed to parse incoming webhook JSON.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid JSON payload.")    
+    event = data.get("webhookEvent", "unknown_event")
+    user_id_str = None
+    try:
+        issue_self_url = data.get("issue", {}).get("self", "")
+        if not issue_self_url:
+            logger.warning("Webhook payload did not contain 'issue.self' URL. Cannot identify user.")
+            raise HTTPException(status_code=400, detail="Cannot identify Jira instance from payload.")
+        domain = issue_self_url.split('/')[2]
+        db_collection = request.app.db[settings.COLLECTION_NAME]
+        user_doc = await db_collection.find_one({"jira_domain": domain})
+        email=user_doc['jira_email']
+        
 
+        if not user_doc:
+            logger.error(f"Received webhook from unknown Jira domain: {domain}")
+            return {"status": "error", "detail": "User for this Jira instance not found."}
+        user_id_str = str(user_doc['_id'])
+        logger.info(f"Webhook received for user: {user_doc['jira_email']} (ID: {user_id_str})")
+    except (KeyError, IndexError) as e:
+        logger.error(f"Could not parse Jira domain from webhook payload. Error: {e}")
+        raise HTTPException(status_code=400, detail="Malformed webhook payload.")
+    
+    # Now that we have the user_id, call your processing function from main2.py
+    await handle_webhook(event, data, user_id_str,email)
+
+    return {"status": "webhook received and processing initiated"}
+
+
+# --- 5. API Endpoint ---
 @app.post("/api/jira/connect",
           status_code=status.HTTP_200_OK,
           tags=["Jira Integration"],
-          summary="Save Jira Credentials and Trigger Data Sync")
-async def connect_and_sync_jira(background_tasks: BackgroundTasks, credentials: JiraCredentials, request: Request):
-    """
-    Validates Jira credentials, saves them, and starts background tasks for data synchronization.
-    """
+          summary="Save or Update Jira Credentials (Plaintext)")
+async def connect_and_sync_jira(background_tasks: BackgroundTasks,credentials: JiraCredentials, request: Request):
+
     auth = BasicAuth(credentials.jira_email, credentials.jira_api_key)
-    headers = {"Accept": "application/json"}
+    headers = {
+        "Accept": "application/json"
+    }
     base_url = f"https://{credentials.jira_domain}/rest/api/3/myself"
+
     db = request.app.db
-    
+    email = credentials.jira_email
+
+    # Prepare the document for MongoDB. We use the email as the _id.
+    # The API key is stored directly without encryption.
+    credential_document = {
+        "jira_email":credentials.jira_email,
+        "jira_domain": credentials.jira_domain,
+        "jira_api_key": credentials.jira_api_key,
+    }
+
+    # Perform an "upsert" operation
     try:
-        # Step 1: Validate credentials against Jira API
-        async with ClientSession(auth=auth, headers=headers) as session:
-            async with session.get(base_url) as response:
-                if response.status != 200:
-                    if response.status == http.HTTPStatus.UNAUTHORIZED:
-                        raise AuthenticationError("Unauthorized (401): Invalid API credentials.")
-                    elif response.status == http.HTTPStatus.FORBIDDEN:
-                        raise PermissionError("Forbidden (403): Access denied.")
-                    else:
-                        error_text = await response.text()
-                        logger.error(f"JIRA API error: {response.status} - {error_text}")
-                        raise JiraAPIError(status_code=response.status, message=error_text)
+       async with ClientSession(auth=auth, headers=headers) as session:
+           async with session.get(base_url) as response:
+               if response.status == 200:
+                   db_collection = request.app.db[settings.COLLECTION_NAME]
+                   result=await db[settings.COLLECTION_NAME].insert_one(credential_document)
+                   new_user_id=result.inserted_id
+                   user_id_str = str(new_user_id)
+                   jira_webhook(user_id_str)
+                   print(user_id_str)
+                   background_tasks.add_task(process_all_issues, user_id_str,db_collection,credentials.jira_email)
+                   background_tasks.add_task(webhook, user_id_str,db_collection)
+                #    background_tasks.add_task(jira_webhook,request)
 
-        # Step 2: If validation is successful, save credentials to the database
-        credential_document = {
-            "jira_email": credentials.jira_email,
-            "jira_domain": credentials.jira_domain,
-            "jira_api_key": credentials.jira_api_key, # Note: Storing plaintext API keys is not recommended in production
-        }
-        
-        # Use the collection name from the settings object
-        result = await db[settings.COLLECTION_NAME].insert_one(credential_document)
-        new_user_id = str(result.inserted_id)
-        
-        print(f"Successfully saved credentials for {credentials.jira_email} with ID: {new_user_id}")
+                   
+                #    background_tasks.add_task(fetch_all_project_details, user_id_str,db_collection)
+                   return {"message": "Issue processing started in background"}
+                #    return {"message": "Connection has been made successfully",
+                        #    "email":credentials.jira_email}
 
-        # Step 3: Add tasks to the background
-        # Use the correct collection names from settings for background tasks
-        issues_collection = db[settings.COLLECTION_NAME_ISSUES]
-        
-        background_tasks.add_task(process_all_issues, new_user_id, issues_collection)
-        background_tasks.add_task(webhook, new_user_id, issues_collection)
-        # background_tasks.add_task(fetch_all_project_details, new_user_id, issues_collection)
-        
-        return {
-            "message": "Jira credentials validated and saved. Data synchronization will begin in the background.",
-            "user_id": new_user_id,
-            "email": credentials.jira_email
-        }
+               if response.status == http.HTTPStatus.UNAUTHORIZED:
+                    logger.error("Authentication failed: Invalid API key or credentials.")
+                    raise AuthenticationError("Unauthorized (401): Invalid API credentials.")
+               elif response.status == http.HTTPStatus.FORBIDDEN:
+                    logger.error("Access denied: You do not have permission to access this resource.")
+                    raise PermissionError("Forbidden (403): Access denied.")
+               elif response.status == http.HTTPStatus.TOO_MANY_REQUESTS:
+                    logger.warning("Rate limit hit: JIRA API returned 429. Retrying with backoff.")
+                    raise JiraAPIError(status_code=response.status, message="Rate limit exceeded")
+               else:
+                    error_text = await response.text()
+                    logger.error(f"JIRA API error: {response.status} - {error_text}")
+                    raise JiraAPIError(status_code=response.status, message=error_text)
 
     except ClientConnectionError as e:
         logger.error(f"Network connection error to JIRA: {e}")
         raise HTTPException(status_code=503, detail="Unable to connect to JIRA.")
-    except asyncio.TimeoutError:
-        logger.error("Request to JIRA timed out")
+
+    except asyncio.TimeoutError as e:
+        logger.error(f"Request to JIRA timed out: {e}")
         raise HTTPException(status_code=504, detail="Request to JIRA timed out.")
+
     except AuthenticationError as e:
         raise HTTPException(status_code=401, detail=str(e))
+
     except PermissionError as e:
         raise HTTPException(status_code=403, detail=str(e))
+    
     except JiraAPIError as e:
         raise HTTPException(status_code=e.status_code, detail=e.message)
+
+    except Exception as e:
+        logger.exception(f"Unexpected error: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error.")     
     except PyMongoError as e:
-        logger.error(f"MongoDB operation failed for email {credentials.jira_email}. Details: {e}")
+        print(f"ERROR: MongoDB operation failed for email {email}. Details: {e}")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Could not save credentials to the database."
+            detail="Could not save credentials to the database. Please try again later."
         )
-    except Exception as e:
-        logger.exception(f"An unexpected error occurred: {e}")
-        raise HTTPException(status_code=500, detail="An internal server error occurred.")
+
+
+    print(f"Successfully saved credentials for {email}. Ready to trigger background sync.")
+
+    return {
+        "message": "Jira credentials saved successfully. Data synchronization will begin shortly.",
+        "email": email
+    }
+
+# --- 6. Main execution block (for direct script running) ---
+# if _name_ == "_main_":
+#     print("Starting FastAPI server...")
+#     # To run this script:
+#     # 1. Create a .env file with your MONGO_URI.
+#     # 2. Run the command in your terminal: uvicorn your_script_name:app --reload
+#     uvicorn.run(app, host="0.0.0.0", port=8000)

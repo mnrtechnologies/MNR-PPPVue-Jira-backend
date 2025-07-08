@@ -415,7 +415,7 @@ async def get_team_field_id(auth,base_url):
         logger.error(f"Error fetching team field ID: {e}")
         return None
 
-async def process_all_issues(user_id,db_collection):
+async def process_all_issues(user_id,db_collection,email):
     try:
         try:
             object_id=ObjectId(user_id)
@@ -586,14 +586,15 @@ async def process_all_issues(user_id,db_collection):
                             "due_date": due_date,
                             "updated_str": updated_str,
                             "update_inactivity_days": updated_inactivity_days,
-                            "priority": priority
+                            "priority": priority,
+                            "user_id":user_id
                         }
                         
                         if status_transition is not None:
                             data["status_transition_log"] = status_transition
                         # --- MODIFICATION: Send data to SQS instead of appending to a list ---
                         # print(data)
-                        success = await send_issue_to_sqs(data)
+                        success = await send_issue_to_sqs(data,email)
                         if success:
                             total_processed_and_sent += 1
                         else:

@@ -18,8 +18,8 @@ class PermissionError(Exception):
 
 class JiraAPIError(Exception):
     """Raised for general JIRA API errors (non-200, non-401, non-403)."""
-    def _init_(self, status_code: int, message: str = "JIRA API error"):
-        super()._init_(f"{message}: {status_code}")
+    def init(self, status_code: int, message: str = "JIRA API error"):
+        super().init(f"{message}: {status_code}")
         self.status_code = status_code
         self.message = message
 
@@ -59,7 +59,7 @@ def _calculate_inactivity_days(updated_str, issue_key):
         logger.warning(f"Failed to parse 'updated' timestamp for issue {issue_key}: {e}")
         return None
 
-def _parse_issue_data(issue, changelog):
+def _parse_issue_data(issue, changelog,user_id):
     """Parses the issue data from the webhook payload."""
     fields = issue.get("fields", {})
     issue_key = issue.get('key', 'N/A')
@@ -90,7 +90,8 @@ def _parse_issue_data(issue, changelog):
         "due_date": fields.get('duedate', 'No due date'),
         "updated_str": updated_str,
         "update_inactivity_days": updated_inactivity_days,
-        "priority": fields.get("priority", {}).get("name", "N/A")
+        "priority": fields.get("priority", {}).get("name", "N/A"),
+        "user_id":user_id
     }
     
     # Add changelog for created issues, as it might be relevant
@@ -99,9 +100,9 @@ def _parse_issue_data(issue, changelog):
 
     return data
 
-async def _send_data_to_sqs(data, issue_key):
+async def _send_data_to_sqs(data, issue_key,email):
     """Sends the processed data to SQS and handles the response."""
-    success = await send_issue_to_sqs(data)
+    success = await send_issue_to_sqs(data,email)
     if success:
         logger.info(f"Successfully sent {issue_key} to SQS.")
         return {"status": "success", "message": f"Issue {issue_key} update sent to SQS."}
@@ -113,7 +114,7 @@ async def _send_data_to_sqs(data, issue_key):
 
 # --- Main Webhook Handler ---
 
-async def handle_webhook(event, data):
+async def handle_webhook(event, data,user_id,email):
     """
     Handles incoming JIRA webhooks for issue creation and updates.
     """
@@ -130,7 +131,7 @@ async def handle_webhook(event, data):
         issue_key = issue.get('key', 'N/A')
 
         # Parse the common issue data
-        parsed_data = _parse_issue_data(issue, changelog)
+        parsed_data = _parse_issue_data(issue, changelog,user_id)
 
         # Handle status transitions
         status_transition = await status_transition_log(changelog)
@@ -141,14 +142,9 @@ async def handle_webhook(event, data):
         print(parsed_data)
         
         # Send to SQS
-        return await _send_data_to_sqs(parsed_data, issue_key)
+        return await _send_data_to_sqs(parsed_data, issue_key,email)
+        
 
     except Exception as e:
         logger.error(f"Error processing webhook: {e}", exc_info=True)
-        return {"status": "error", "message": str(e)}
-
-# if _name_ == "_main_":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
-
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+        return {"status": "error", "message": str(e)}  

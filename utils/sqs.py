@@ -38,7 +38,7 @@ except Exception as e:
     logger.critical(f"An unexpected error occurred during credential loading: {e}. Exiting.")
     _sqs_client = None
 
-async def send_issue_to_sqs(issue_data: Dict[str, Any]) -> bool:
+async def send_issue_to_sqs(issue_data: Dict[str, Any],email) -> bool:
     """
     Sends a single issue data dictionary to the configured AWS SQS queue.
 
@@ -48,6 +48,7 @@ async def send_issue_to_sqs(issue_data: Dict[str, Any]) -> bool:
     Returns:
         True if the message was sent successfully, False otherwise.
     """
+    logger.info(f"the email is which fetched is this {email}")
     if not _sqs_client:
         logger.error("SQS client not available. Cannot send issue to queue.")
         return False
@@ -58,7 +59,14 @@ async def send_issue_to_sqs(issue_data: Dict[str, Any]) -> bool:
         
         response = _sqs_client.send_message(
             QueueUrl="https://sqs.eu-north-1.amazonaws.com/888823204260/sqs1",
-            MessageBody=message_body
+            MessageBody=message_body,
+            MessageAttributes={
+                 'jira_email':{
+                      'DataType':'String',
+                      'StringValue':email
+                 }
+            }
+            
         )
         
         # logger.info(f"Successfully sent issue {issue_data['key']} to SQS. Message ID: {response.get('MessageId')}")

@@ -17,7 +17,7 @@ DATABASE_NAME = os.getenv("DATABASE_NAME")
 COLLECTION_NAME_ISSUES = os.getenv("COLLECTION_NAME")
 
 # NGROK base URL and endpoint
-NGROK_BASE_URL = "https://f0fc-122-181-53-248.ngrok-free.app"
+NGROK_BASE_URL = "https://mnr-pppvue-jira-backend.onrender.com"
 WEBHOOK_ENDPOINT_PATH = "/jira-webhook"
 WEBHOOK_URL = f"{NGROK_BASE_URL}{WEBHOOK_ENDPOINT_PATH}"
 
