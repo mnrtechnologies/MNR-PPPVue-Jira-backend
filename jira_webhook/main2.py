@@ -79,7 +79,7 @@ def _parse_issue_data(issue, changelog,user_id):
     data = {
         "key": issue_key,
         "project_name": project_details.get("name", "NA") if project_details else "NA",
-        "last_ai_interaction_day":today,
+        "last_ai_interaction_day":today.isoformat(),
         "worklog_enterie": fields.get("worklog", {}).get("total", 0),
         "team": team_names.get("name", "NA") if team_names else "NA",
         "summary": fields.get('summary', 'No summary'),
