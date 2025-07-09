@@ -10,6 +10,8 @@ from src.ingestion.aws_fetch_issue import process_all_issues
 from src.ingestion.fetch_projects import fetch_all_project_details
 from motor.motor_asyncio import AsyncIOMotorClient
 import uvicorn
+import re
+from urllib.parse import urlparse
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field, EmailStr
 from bson import ObjectId
@@ -23,12 +25,7 @@ from aiohttp import BasicAuth, ClientSession, ClientConnectionError, ClientRespo
 from src.logger import get_logger
 logger = get_logger(__name__)
 
-# --- 1. Configuration Management ---
-# Load configuration from environment variables (.env file)
-# Create a file named .env in the same directory with these values:
-# MONGO_URI="mongodb://localhost:27017/"
-# JIRA_DB_NAME="jira_project_management"
-# JIRA_COLLECTION_NAME="credentials"
+
 class AuthenticationError(Exception):
     pass
 
@@ -141,40 +138,82 @@ app = FastAPI(
     lifespan=lifespan
 )
 @app.post("/jira-webhook")
-async def jira_webhook(request:Request):
+async def jira_webhook(request: Request):
     print("jira webhook setup")
     try:
         data = await request.json()
     except Exception:
         logger.error("Failed to parse incoming webhook JSON.")
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid JSON payload.")    
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid JSON payload.")
+
     event = data.get("webhookEvent", "unknown_event")
     user_id_str = None
+    domain = None # Initialize domain to None
+
     try:
-        issue_self_url = data.get("issue", {}).get("self", "")
-        if not issue_self_url:
-            logger.warning("Webhook payload did not contain 'issue.self' URL. Cannot identify user.")
-            raise HTTPException(status_code=400, detail="Cannot identify Jira instance from payload.")
-        domain = issue_self_url.split('/')[2]
+        issue = data.get("issue", {})
+        issue_self_url = issue.get("self")
+        issue_key = issue.get("key")
+
+        if issue_self_url:
+            parsed = urlparse(issue_self_url)
+            domain = f"{parsed.scheme}://{parsed.netloc}"
+        else:
+            # Initialize possible_urls outside the nested function
+            possible_urls = []
+
+            def find_urls(obj):
+                if isinstance(obj, dict):
+                    for k, v in obj.items():
+                        if isinstance(v, str) and (v.startswith("http://") or v.startswith("https://")):
+                            possible_urls.append(v)
+                        else:
+                            find_urls(v)
+                elif isinstance(obj, list):
+                    for item in obj:
+                        find_urls(item)
+
+            find_urls(data)
+
+            if possible_urls:
+                parsed = urlparse(possible_urls[0])
+                domain = f"{parsed.scheme}://{parsed.netloc}"
+            else:
+                logger.warning("No URLs found in the webhook payload to determine Jira domain.")
+                raise HTTPException(status_code=400, detail="Could not determine Jira domain from payload.")
+
+        # Ensure domain is set before proceeding
+        if not domain:
+             logger.error("Jira domain could not be determined.")
+             raise HTTPException(status_code=400, detail="Jira domain could not be determined from payload.")
+
         db_collection = request.app.db[settings.COLLECTION_NAME]
-        user_doc = await db_collection.find_one({"jira_domain": domain})
-        email=user_doc['jira_email']
-        
+        domain_prefix=re.sub(r'^https?://', '', domain)
+        user_doc = await db_collection.find_one({"jira_domain": domain_prefix})
 
         if not user_doc:
             logger.error(f"Received webhook from unknown Jira domain: {domain}")
             return {"status": "error", "detail": "User for this Jira instance not found."}
+
+        email = user_doc['jira_email']
+        api_token = user_doc['jira_api_key']
+        print(email)
+        print(api_token)
+        print(domain)
+
         user_id_str = str(user_doc['_id'])
         logger.info(f"Webhook received for user: {user_doc['jira_email']} (ID: {user_id_str})")
-    except (KeyError, IndexError) as e:
+
+    except (KeyError, IndexError, HTTPException) as e: # Catch HTTPException explicitly if raised internally
+        if isinstance(e, HTTPException):
+            raise e # Re-raise if it's already an HTTPException
         logger.error(f"Could not parse Jira domain from webhook payload. Error: {e}")
-        raise HTTPException(status_code=400, detail="Malformed webhook payload.")
-    
+        raise HTTPException(status_code=400, detail="Malformed webhook payload or domain not found.")
+
     # Now that we have the user_id, call your processing function from main2.py
-    await handle_webhook(event, data, user_id_str,email)
+    await handle_webhook(event, data, user_id_str, email, api_token, domain_prefix)
 
     return {"status": "webhook received and processing initiated"}
-
 
 # --- 5. API Endpoint ---
 @app.post("/api/jira/connect",
@@ -220,7 +259,7 @@ async def connect_and_sync_jira(background_tasks: BackgroundTasks,credentials: J
                    user_id_str = str(new_user_id)
                 #    jira_webhook(user_id_str)
                    print(user_id_str)
-                   background_tasks.add_task(process_all_issues, user_id_str,db_collection,credentials.jira_email)
+                #    background_tasks.add_task(process_all_issues, user_id_str,db_collection,credentials.jira_email)
                 #    background_tasks.add_task(fetch_all_project_details, user_id_str,db_collection)
 
                    background_tasks.add_task(webhook, user_id_str,db_collection)
