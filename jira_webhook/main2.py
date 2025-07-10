@@ -6,8 +6,8 @@ from utils.sqs import send_issue_to_sqs
 from datetime import date
 import asyncio
 today = date.today()
-def gettime():
-    return date.today().isoformat() # This ensures it's always the current date
+# def gettime():
+#     return date.today().isoformat() # This ensures it's always the current date
     
 
 # Initialize logger
@@ -102,7 +102,7 @@ def _parse_issue_data(issue, changelog,user_id):
     """Parses the issue data from the webhook payload."""
     fields = issue.get("fields", {})
     issue_key = issue.get('key', 'N/A')
-    time= gettime()
+    # time= gettime()
     project_details = fields.get("project", {})
     team_names = fields.get("customfield_10001")
     assignee_info = fields.get("assignee")
@@ -116,7 +116,7 @@ def _parse_issue_data(issue, changelog,user_id):
     data = {
         "key": issue_key,
         "project_name": project_details.get("name", "NA") if project_details else "NA",
-        "last_ai_interaction_day":time,
+        # "last_ai_interaction_day":time,
         "team": team_names.get("name", "NA") if team_names else "NA",
         "summary": fields.get('summary', 'No summary'),
         "assignee": assignee_info.get("displayName", "Unassigned") if assignee_info else "Unassigned",
@@ -146,7 +146,7 @@ async def worklog_issue_data(worklog,user_id,email,api_token,domain):
     issue_details =await get_details(issue_id,email,api_token,domain)
     issue_key = issue_details.get("key")
     fields = issue_details.get("fields", {})
-    time= gettime()
+    # time= gettime()
     project_details = fields.get("project", {})
     team_names = fields.get("customfield_10001")
     assignee_info = fields.get("assignee")
@@ -162,7 +162,7 @@ async def worklog_issue_data(worklog,user_id,email,api_token,domain):
     data = {
         "key": issue_key,
         "project_name": project_details.get("name", "NA") if project_details else "NA",
-        "last_ai_interaction_day":time,
+        # "last_ai_interaction_day":time,
         "worklog_enterie": fields.get("worklog", {}).get("total", 0),
         "team": team_names.get("name", "NA") if team_names else "NA",
         "summary": fields.get('summary', 'No summary'),
@@ -194,6 +194,7 @@ async def worklog_issue_data(worklog,user_id,email,api_token,domain):
 
 async def _send_data_to_sqs(data, issue_key,email):
     """Sends the processed data to SQS and handles the response."""
+    print(f"Attempting to send data to SQS: {data}")
     success = await send_issue_to_sqs(data,email)
     if success:
         logger.info(f"Successfully sent {issue_key} to SQS.")
@@ -215,9 +216,6 @@ async def handle_webhook(event, data,user_id,email,api_token,domain):
         webhook_event = data.get("webhookEvent", "unknown")
         
         if webhook_event  in ["jira:issue_updated", "jira:issue_created"]:
-            # print(f"⚠  Ignoring event: {webhook_event}")
-            # return {"status": "received", "message": f"Event '{webhook_event}' ignored."}
-
             issue = data.get("issue", {})
             changelog = data.get("changelog", {})
             issue_key = issue.get('key', 'N/A')
@@ -234,14 +232,16 @@ async def handle_webhook(event, data,user_id,email,api_token,domain):
             print(parsed_data)
             
             # Send to SQS
-            # return await _send_data_to_sqs(parsed_data, issue_key,email)
+            return await _send_data_to_sqs(parsed_data, issue_key,email)
         elif webhook_event in["worklog_created", "worklog_updated", "worklog_deleted"]:
             worklog=data.get("worklog",{})
             issue_id=worklog.get("issueId")
             worklog_parsed_data=await worklog_issue_data(worklog,user_id,email,api_token,domain)
             print(worklog_parsed_data)
-            # return await _send_data_to_sqs(worklog_parsed_data,issue_id,email)
-        
+            return await _send_data_to_sqs(worklog_parsed_data,issue_id,email)
+        else:
+            logger.info(f"Ignoring event: {webhook_event}")
+            return {"status": "ignored", "message": f"Event '{webhook_event}' was received but not processed."}
 
     except Exception as e:
         logger.error(f"Error processing webhook: {e}", exc_info=True)
