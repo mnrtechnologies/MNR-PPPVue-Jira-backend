@@ -259,7 +259,7 @@ async def connect_and_sync_jira(background_tasks: BackgroundTasks,credentials: J
                    user_id_str = str(new_user_id)
                 #    jira_webhook(user_id_str)
                    print(user_id_str)
-                #    background_tasks.add_task(process_all_issues, user_id_str,db_collection,credentials.jira_email)
+                   background_tasks.add_task(process_all_issues, user_id_str,db_collection,credentials.jira_email)
                 #    background_tasks.add_task(fetch_all_project_details, user_id_str,db_collection)
 
                    background_tasks.add_task(webhook, user_id_str,db_collection)
@@ -269,7 +269,7 @@ async def connect_and_sync_jira(background_tasks: BackgroundTasks,credentials: J
                 #    background_tasks.add_task(fetch_all_project_details, user_id_str,db_collection)
                    return {"message": "Issue processing started in background"}
                 #    return {"message": "Connection has been made successfully",
-                        #    "email":credentials.jira_email}
+                #            "email":credentials.jira_email}
 
                if response.status == http.HTTPStatus.UNAUTHORIZED:
                     logger.error("Authentication failed: Invalid API key or credentials.")
