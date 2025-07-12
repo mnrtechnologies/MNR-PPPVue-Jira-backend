@@ -59,7 +59,7 @@ _sqs_client = None
 #         "Accept": "application/json",
 #         "Content-Type": "application/json"
 #     }
-    
+
     # --- Initialize SQS Client ---
 #     try:
 #         _sqs_client = boto3.client(
@@ -92,7 +92,7 @@ _sqs_client = None
 async def get_session(auth,headers) -> ClientSession:
     """Get or create a reusable aiohttp session with proper configuration."""
     global _session, _semaphore
-    
+
     if _session is None or _session.closed:
         timeout = ClientTimeout(total=config.REQUEST_TIMEOUT)
         connector = aiohttp.TCPConnector(
@@ -103,7 +103,7 @@ async def get_session(auth,headers) -> ClientSession:
             keepalive_timeout=30,
             enable_cleanup_closed=True
         )
-        
+
         _session = ClientSession(
             auth=auth,
             headers=headers,
@@ -111,10 +111,10 @@ async def get_session(auth,headers) -> ClientSession:
             connector=connector,
             raise_for_status=False  # We'll handle status codes manually
         )
-        
+
     if _semaphore is None:
         _semaphore = asyncio.Semaphore(config.MAX_CONCURRENT_REQUESTS)
-    
+
     return _session
 
 async def status_transition_log(changelog):
@@ -122,7 +122,8 @@ async def status_transition_log(changelog):
     Finds the VERY FIRST status change in the changelog histories and returns it.
     """
     histories = changelog.get("histories", [])
-    
+    status_transiton_log=[]
+
     # Loop through each history record
     for history in histories:
         # Loop through each change item in that history
@@ -130,15 +131,15 @@ async def status_transition_log(changelog):
             # Check if this item is a status change
             if item.get("field") == "status":
                 # If it is, create the dictionary
-                first_status_change = {
+                status_transiton_log.append({
                     "created": history.get("created"),
                     "fromString": item.get("fromString"),
                     "toString": item.get("toString")
-                }
-                # Immediately return the single record inside a list and exit the function
-                return [first_status_change]
+                })
+                
+    return status_transiton_log
 
-    return None        
+    # return None
 
 async def close_session():
     """Properly close the global session."""
@@ -228,12 +229,12 @@ async def get_days_in_current_status(changelog, current_status):
 #     try:
 #         # SQS message body must be a string
 #         message_body = json.dumps(issue_data)
-        
+
 #         response = _sqs_client.send_message(
 #             QueueUrl=config.SQS_QUEUE_URL,
 #             MessageBody=message_body
 #         )
-        
+
 #         logger.info(f"Successfully sent issue {issue_data['key']} to SQS. Message ID: {response.get('MessageId')}")
 #         return True
 #     except ClientError as e:
@@ -255,12 +256,12 @@ async def fetch_issues_for_project(headers,base_url,auth,project_key: str, start
         return {"issues": [], "total": 0}
 
     url = f"https://{base_url}/rest/api/3/search"
-    
+
     # Build fields list - include team field if available
     fields_list = "summary,assignee,reporter,labels,duedate,priority,worklog,updated,timetracking,status,customfield_10020,customfield_10001"
     if team_field_id and team_field_id not in fields_list:
         fields_list += f",{team_field_id}"
-    
+
     params = {
         "jql": f"project={project_key}",
         "startAt": startAt,
@@ -270,12 +271,12 @@ async def fetch_issues_for_project(headers,base_url,auth,project_key: str, start
     }
 
     session = await get_session(auth,headers)
-    
+
     # Use semaphore to limit concurrent requests
     async with _semaphore:
         attempt = 0
         rate_limit_attempts = 0
-        
+
         while attempt < config.MAX_RETRIES:
             try:
                 start_time = time.time()
@@ -289,18 +290,18 @@ async def fetch_issues_for_project(headers,base_url,auth,project_key: str, start
                         await asyncio.sleep(sleep_time)
 
                 _last_request_time = asyncio.get_event_loop().time()
-                
+
                 async with session.get(url, params=params) as response:
                     request_duration = time.time() - start_time
                     logger.debug(f"Request to {project_key} took {request_duration:.2f}s")
-                    
+
                     # Handle rate limiting
                     if response.status == 429:
                         rate_limit_attempts += 1
                         if rate_limit_attempts > config.RATE_LIMIT_MAX_RETRIES:
                             logger.error(f"Exceeded maximum rate limit retries ({config.RATE_LIMIT_MAX_RETRIES}) for project {project_key}")
                             break
-                            
+
                         retry_after = int(response.headers.get("Retry-After", "5"))
                         logger.warning(
                             f"Rate limited by API for project {project_key}. "
@@ -308,7 +309,7 @@ async def fetch_issues_for_project(headers,base_url,auth,project_key: str, start
                         )
                         await asyncio.sleep(retry_after)
                         continue  # Don't increment main attempt counter for rate limits
-                    
+
                     # Handle other HTTP errors
                     if response.status >= 500:
                         # Server-side errors - retry with backoff
@@ -324,7 +325,7 @@ async def fetch_issues_for_project(headers,base_url,auth,project_key: str, start
                         else:
                             logger.error(f"Failed to fetch issues for {project_key} after {config.MAX_RETRIES} server error attempts.")
                             break
-                    
+
                     elif response.status >= 400:
                         # Client errors - don't retry
                         error_text = await response.text()
@@ -333,7 +334,7 @@ async def fetch_issues_for_project(headers,base_url,auth,project_key: str, start
                             f"This error is not retried."
                         )
                         break
-                    
+
                     # Success case
                     if response.status == 200:
                         response_data = await response.json()
@@ -395,11 +396,11 @@ async def get_team_field_id(auth,base_url,headers):
     if not base_url or not auth:
         logger.error("Cannot fetch team field ID: API client not initialized.")
         return None
-    
+
     try:
         fields_url = f"https://{base_url}/rest/api/3/field"
         session = await get_session(auth,headers)
-        
+
         async with session.get(fields_url) as response:
             if response.status == 200:
                 fields_data = await response.json()
@@ -433,8 +434,8 @@ async def process_all_issues(user_id,db_collection,email):
         }
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None    
-            
+        return None
+
     if not base_url or not auth:
         logger.critical("Cannot process issues: API client not initialized.")
         return 0, 0 # issues_processed, issues_failed_to_send
@@ -448,14 +449,14 @@ async def process_all_issues(user_id,db_collection,email):
         if not team_field_id:
            logger.warning("Team field ID not found. Team information will not be available.")
            team_field_id = None
-        
+
         # --- FIX: Call the correct function that returns project details ---
         projects_details = await fetch_all_project_details(user_id,db_collection)
-        
+
         if not projects_details:
             logger.info("No projects found to process.")
             return 0, 0
-        
+
         logger.info(f"Found {len(projects_details)} projects to process.")
         total_processed_and_sent = 0
         total_failed_to_send = 0
@@ -474,7 +475,7 @@ async def process_all_issues(user_id,db_collection,email):
             maxResults = config.MAX_RESULTS_PER_REQUEST
             total_issues_for_project = -1
             project_issues_processed = 0
-            
+
             logger.info(f"Processing project: '{project_key}' ({project_name})")
 
             while True:
@@ -498,7 +499,7 @@ async def process_all_issues(user_id,db_collection,email):
                         if not fields:
                             logger.warning(f"Issue {issue_key} has no 'fields' data. Skipping.")
                             continue
-                        
+
                         summary = fields.get('summary', 'No summary')
                         team_name="No team assigned"
                         if team_field_id:
@@ -544,7 +545,7 @@ async def process_all_issues(user_id,db_collection,email):
 
                         status_data = fields.get('status', {})
                         current_status = status_data.get('name', 'Unknown') if isinstance(status_data, dict) else 'Unknown'
-                        
+
                         updated_str = fields.get("updated", None)
                         updated_inactivity_days = None  # Default in case 'updated' is missing or malformed
 
@@ -571,7 +572,7 @@ async def process_all_issues(user_id,db_collection,email):
 
                         data = {
                             "key": issue_key,
-                            # "status_transition":status_transition,
+                            "status_transition":status_transition,
                             "project_name":project_name,
                             "last_ai_interaction_day":today.isoformat(),
                             "worklog_enterie":worklog_entries,
@@ -592,19 +593,19 @@ async def process_all_issues(user_id,db_collection,email):
                             "priority": priority,
                             "user_id":user_id
                         }
-                        
+
                         if status_transition is not None:
                             data["status_transition_log"] = status_transition
                         # --- MODIFICATION: Send data to SQS instead of appending to a list ---
-                        # print(data)
-                        success = await send_issue_to_sqs(data,email)
-                        if success:
-                            total_processed_and_sent += 1
-                        else:
-                            total_failed_to_send += 1
-                        
-                        project_issues_processed += 1
-                        
+                        print(data)
+                        # success = await send_issue_to_sqs(data,email)
+                        # if success:
+                        #     total_processed_and_sent += 1
+                        # else:
+                        #     total_failed_to_send += 1
+
+                        # project_issues_processed += 1
+
                     startAt += len(issues)
                     if startAt >= total_for_project:
                         logger.info(f"Finished fetching all {total_for_project} issues for project {project_key}.")
@@ -613,7 +614,7 @@ async def process_all_issues(user_id,db_collection,email):
                 except Exception as e:
                     logger.exception(f"An unhandled error occurred while processing issues for project {project_key}. Halting project.")
                     break # Stop processing this project on error
-            
+
             logger.info(f"Processed {project_issues_processed} issues for project {project_key}")
 
         logger.info(f"Finished processing all projects.")
@@ -622,7 +623,7 @@ async def process_all_issues(user_id,db_collection,email):
     except Exception as e:
         logger.critical(f"Critical error in process_all_issues: {e}", exc_info=True)
         return 0, 0
-    
+
     finally:
         await close_session()
 
@@ -632,7 +633,7 @@ async def process_all_issues(user_id,db_collection,email):
 #     if auth and base_url:
 #         try:
 #             total_sent, total_failed = asyncio.run(process_all_issues())
-            
+
 #             # --- FINAL SQS PUSH STATUS REPORT ---
 #             print("\n" + "="*50)
 #             print("--- SCRIPT FINISHED: SQS PUSH SUMMARY ---")
