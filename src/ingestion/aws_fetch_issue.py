@@ -597,14 +597,14 @@ async def process_all_issues(user_id,db_collection,email):
                         if status_transition is not None:
                             data["status_transition_log"] = status_transition
                         # --- MODIFICATION: Send data to SQS instead of appending to a list ---
-                        print(data)
-                        # success = await send_issue_to_sqs(data,email)
-                        # if success:
-                        #     total_processed_and_sent += 1
-                        # else:
-                        #     total_failed_to_send += 1
+                        # print(data)
+                        success = await send_issue_to_sqs(data,email)
+                        if success:
+                            total_processed_and_sent += 1
+                        else:
+                            total_failed_to_send += 1
 
-                        # project_issues_processed += 1
+                        project_issues_processed += 1
 
                     startAt += len(issues)
                     if startAt >= total_for_project:
