@@ -122,7 +122,7 @@ async def status_transition_log(changelog):
     Finds the VERY FIRST status change in the changelog histories and returns it.
     """
     histories = changelog.get("histories", [])
-    status_transiton_log=[]
+    status_transition_log=[]
 
     # Loop through each history record
     for history in histories:
@@ -131,15 +131,15 @@ async def status_transition_log(changelog):
             # Check if this item is a status change
             if item.get("field") == "status":
                 # If it is, create the dictionary
-                status_transiton_log.append({
+                status_transition_log.append({
                     "created": history.get("created"),
                     "fromString": item.get("fromString"),
                     "toString": item.get("toString")
                 })
-                
-    return status_transiton_log
+                # Immediately return the single record inside a list and exit the function
+    return status_transition_log
 
-    # return None
+    
 
 async def close_session():
     """Properly close the global session."""
@@ -594,8 +594,8 @@ async def process_all_issues(user_id,db_collection,email):
                             "user_id":user_id
                         }
 
-                        if status_transition is not None:
-                            data["status_transition_log"] = status_transition
+                        # if status_transition is not None:
+                        #     data["status_transition_log"] = status_transition
                         # --- MODIFICATION: Send data to SQS instead of appending to a list ---
                         # print(data)
                         success = await send_issue_to_sqs(data,email)
